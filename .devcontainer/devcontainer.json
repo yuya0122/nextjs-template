@@ -1,9 +1,7 @@
 {
   "name": "Next.js Development",
   "dockerFile": "Dockerfile",
-  "forwardPorts": [
-    3000
-  ],
+  "forwardPorts": [3000],
   "postCreateCommand": "npm install",
   "customizations": {
     "vscode": {

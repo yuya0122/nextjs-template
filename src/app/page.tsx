@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 
 export default function Home() {
   return (
@@ -6,8 +6,7 @@ export default function Home() {
       <div className="z-10 max-w-5xl w-full items-center justify-center font-mono text-sm flex flex-col">
         <h1 className="text-4xl font-bold mb-8">Next.js Template</h1>
         <p className="mb-4">
-          This is a Next.js template with TypeScript, Tailwind CSS, and
-          shadcn/ui.
+          This is a Next.js template with TypeScript, Tailwind CSS, and shadcn/ui.
         </p>
         <Button>Get Started</Button>
       </div>
