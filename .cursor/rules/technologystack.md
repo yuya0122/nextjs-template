@@ -1,0 +1,7 @@
+- TypeScript: ^5.4.5
+- Node.js: ^20.0.0
+- Next.js: ^15.1.7
+- React: ^19.0.0
+- Tailwind CSS: ^3.4.1
+- shadcn/ui: ^2.1.8
+- biome: ^1.9.4
