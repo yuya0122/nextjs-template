@@ -1,15 +1,17 @@
 {
-  "name": "Next.js Development",
-  "dockerFile": "Dockerfile",
-  "forwardPorts": [3000],
-  "postCreateCommand": "npm install",
+  "name": "Next.js with DB",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "postCreateCommand": "npm install && npx prisma generate && bash .devcontainer/setup-db.sh",
   "customizations": {
     "vscode": {
       "extensions": [
         "bradlc.vscode-tailwindcss",
         "biomejs.biome",
         "cursor.cursor",
-        "ms-vscode.vscode-typescript-next"
+        "ms-vscode.vscode-typescript-next",
+        "Prisma.prisma"
       ],
       "settings": {
         "editor.formatOnSave": true,
@@ -22,5 +24,6 @@
         "typescript.enablePromptUseWorkspaceTsdk": true
       }
     }
-  }
+  },
+  "remoteUser": "node"
 }

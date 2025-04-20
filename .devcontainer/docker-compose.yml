@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  # Next.jsアプリケーション
+  app:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    volumes:
+      - ..:/workspace:cached
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_APP_URL=http://localhost:3000
+      - DATABASE_URL=postgresql://postgres-user:postgres-password@db:5432/postgres-db
+      # Supabaseで使用する場合は直接接続URLも指定
+      - DIRECT_URL=postgresql://postgres-user:postgres-password@db:5432/postgres-db
+    depends_on:
+      - db
+    entrypoint: ["sleep", "infinity"]
+
+  db:
+    image: postgres:15
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: postgres-password
+      POSTGRES_USER: postgres-user
+      POSTGRES_DB: postgres-db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres-user"]
+      interval: 5s
+      timeout: 5s
+      retries: 5 
