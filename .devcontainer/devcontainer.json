@@ -3,14 +3,15 @@
   "dockerComposeFile": "docker-compose.yml",
   "service": "app",
   "workspaceFolder": "/workspace",
-  "postCreateCommand": "npm install",
+  "postCreateCommand": "sh .devcontainer/post-create-command.sh",
   "customizations": {
     "vscode": {
       "extensions": [
         "bradlc.vscode-tailwindcss",
         "biomejs.biome",
         "cursor.cursor",
-        "ms-vscode.vscode-typescript-next"
+        "ms-vscode.vscode-typescript-next",
+        "Prisma.prisma"
       ],
       "settings": {
         "editor.formatOnSave": true,
