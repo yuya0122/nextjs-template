@@ -5,3 +5,4 @@
 - Tailwind CSS: ^3.4.1
 - shadcn/ui: ^2.1.8
 - biome: ^1.9.4
+- prisma: ^6.6.0,
