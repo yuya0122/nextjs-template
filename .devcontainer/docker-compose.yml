@@ -8,7 +8,6 @@ services:
       dockerfile: .devcontainer/Dockerfile
     volumes:
       - ..:/workspace:cached
-      - ../supabase:/workspace/supabase:cached
     ports:
       - "3000:3000" # Next.js app
     environment:
