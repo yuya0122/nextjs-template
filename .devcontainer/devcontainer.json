@@ -1,7 +1,8 @@
 {
-  "name": "Next.js Development",
-  "dockerFile": "Dockerfile",
-  "forwardPorts": [3000],
+  "name": "Next.js",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
   "postCreateCommand": "npm install",
   "customizations": {
     "vscode": {
@@ -22,5 +23,6 @@
         "typescript.enablePromptUseWorkspaceTsdk": true
       }
     }
-  }
+  },
+  "remoteUser": "node"
 }
