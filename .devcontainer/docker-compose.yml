@@ -60,7 +60,7 @@ services:
       - KONG_PLUGINS=request-transformer,cors,key-auth
       - KONG_NGINX_RESOLVER_ADDRESSES=127.0.0.11
     volumes:
-      - ../supabase/kong:/var/lib/kong:cached
+      - ./kong:/var/lib/kong:cached
     depends_on:
       - supabase-auth
       - supabase-rest

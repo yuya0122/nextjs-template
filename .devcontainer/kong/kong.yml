@@ -1,0 +1,56 @@
+_format_version: "1.1"
+
+services:
+  - name: auth
+    url: http://supabase-auth:9999
+    routes:
+      - name: auth_route
+        paths:
+          - /auth/v1
+  - name: rest
+    url: http://supabase-rest:3000
+    routes:
+      - name: rest_route
+        paths:
+          - /rest/v1
+  - name: storage
+    url: http://supabase-storage:5000
+    routes:
+      - name: storage_route
+        paths:
+          - /storage/v1
+  - name: realtime
+    url: http://realtime:4000/socket
+    routes:
+      - name: realtime_route
+        paths:
+          - /realtime/v1/socket
+
+plugins:
+  - name: cors
+    config:
+      origins:
+        - '*' # Allow all origins for local development. Be more restrictive in production.
+      methods:
+        - GET
+        - POST
+        - PUT
+        - PATCH
+        - DELETE
+        - OPTIONS
+      headers:
+        - authorization
+        - apikey
+        - content-type
+        - x-client-info
+        - accept
+      exposed_headers:
+        - content-range
+      credentials: true
+      max_age: 3600
+  - name: key-auth
+    config:
+      key_names:
+        - apikey
+      run_on: first
+      hide_credentials: true 
