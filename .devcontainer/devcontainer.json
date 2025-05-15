@@ -1,17 +1,18 @@
 {
-  "name": "Next.js",
+  "name": "nextjs-template",
   "dockerComposeFile": "docker-compose.yml",
   "service": "app",
   "workspaceFolder": "/workspace",
-  "postCreateCommand": "sh .devcontainer/post-create-command.sh",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  "postStartCommand": "sh .devcontainer/post-start-command.sh",
   "customizations": {
     "vscode": {
       "extensions": [
         "bradlc.vscode-tailwindcss",
         "biomejs.biome",
-        "cursor.cursor",
-        "ms-vscode.vscode-typescript-next",
-        "Prisma.prisma"
+        "ms-vscode.vscode-typescript-next"
       ],
       "settings": {
         "editor.formatOnSave": true,

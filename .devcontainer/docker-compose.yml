@@ -1,7 +1,7 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  # --- App Service (Using Supabase DB) ---
+  # Next.js アプリ
   app:
     build:
       context: ..
@@ -9,119 +9,19 @@ services:
     volumes:
       - ..:/workspace:cached
     ports:
-      - "3000:3000" # Next.js app
+      - "3000:3000"
+      - "54321:54321"
+      - "54322:54322"
+      - "54323:54323"
+      - "54324:54324"
+    command: ["sleep", "infinity"]
     environment:
-      # Basic App Env Vars
-      - NODE_ENV=development
-      - NEXT_PUBLIC_APP_URL=http://localhost:3000
-      # Application Admin/Auth
-      - ADMIN_USERNAME=hoge
-      - ADMIN_PASSWORD=fuga
-      - JWT_SECRET=your-secure-jwt-secret-key-please-change
-      # Supabase
-      - DATABASE_URL=postgresql://postgres:postgres@supabase-db:5432/postgres
-      - DIRECT_URL=postgresql://postgres:postgres@supabase-db:5432/postgres
-      - SUPABASE_URL=http://kong:8000
-      - SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
-      - SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU
-      - NEXT_PUBLIC_SUPABASE_URL=http://localhost:54321 # Exposed via Kong
-      - NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
-
-    depends_on:
-      # Removed direct dependency on 'db'
-      - kong # Depends on Supabase stack via Kong
-    entrypoint: ["sleep", "infinity"]
-
-  # --- Application DB Service REMOVED ---
-
-  # --- Minimal Supabase Local Stack (Now also serves as App DB) ---
-  supabase-db:
-    image: supabase/postgres:15.1.0.117
-    restart: unless-stopped
-    ports:
-      # Keep exposing Supabase DB port if needed for direct access/debugging
-      - "5433:5432"
-    environment:
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_DB=postgres
-    volumes:
-      - supabase_db_data:/var/lib/postgresql/data
-
-  kong:
-    image: kong:latest
-    restart: unless-stopped
-    ports:
-      - "54321:8000"
-    environment:
-      - KONG_DATABASE=off
-      - KONG_DECLARATIVE_CONFIG=/var/lib/kong/kong.yml
-      - KONG_DNS_ORDER=LAST,A,CNAME
-      - KONG_PLUGINS=request-transformer,cors,key-auth
-      - KONG_NGINX_RESOLVER_ADDRESSES=127.0.0.11
-    volumes:
-      - ./kong:/var/lib/kong:cached
-    depends_on:
-      - supabase-auth
-      - supabase-rest
-      - supabase-storage
-
-  supabase-auth:
-    image: supabase/gotrue:v2.136.0
-    restart: unless-stopped
-    environment:
-      - GOTRUE_JWT_SECRET=super-secret-jwt-token-with-at-least-32-characters-long # Keep this consistent
-      - GOTRUE_JWT_ADMIN_ROLES=service_role
-      - GOTRUE_JWT_AUD=authenticated
-      - GOTRUE_JWT_DEFAULT_GROUP_NAME=authenticated
-      - GOTRUE_SITE_URL=http://localhost:3000
-      - GOTRUE_URI_ALLOW_LIST=http://localhost:3000/*
-      - GOTRUE_DATABASE_URL=postgresql://postgres:postgres@supabase-db:5432/postgres
-    depends_on:
-      - supabase-db
-
-  supabase-rest:
-     image: postgrest/postgrest:v12.0.2
-     restart: unless-stopped
-     environment:
-       - PGRST_DB_URI=postgresql://postgres:postgres@supabase-db:5432/postgres
-       - PGRST_DB_SCHEMA=public,storage
-       - PGRST_DB_ANON_ROLE=anon
-     depends_on:
-       - supabase-db
-
-  supabase-storage:
-    image: supabase/storage-api:v1.5.1
-    restart: unless-stopped
-    environment:
-      - STORAGE_DATABASE_URL=postgresql://postgres:postgres@supabase-db:5432/postgres
-      - STORAGE_S3_COMPATIBLE_STORAGE_ENABLED=true
-      - STORAGE_S3_ENDPOINT=http://minio:9000
-      - STORAGE_S3_ACCESS_KEY=minio-access-key
-      - STORAGE_S3_SECRET_KEY=minio-secret-key
-      - STORAGE_S3_REGION=us-east-1
-      - STORAGE_GLOBAL_S3_BUCKET=storage
-      - FILE_SIZE_LIMIT=52428800
-    ports:
-      - "54324:5000"
-    depends_on:
-      - supabase-db
-      - minio
-
-  minio:
-    image: minio/minio:latest
-    restart: unless-stopped
-    ports:
-      - "9000:9000"  # S3 API Port
-      - "9001:9001"  # MinIO Console Port
-    volumes:
-      - minio_data:/data
-    environment:
-      - MINIO_ROOT_USER=minio-access-key
-      - MINIO_ROOT_PASSWORD=minio-secret-key
-    command: server /data --console-address ":9001"
-
-volumes:
-  # postgres_data: # Removed volume for the old db service
-  supabase_db_data:
-  minio_data: 
+      NODE_ENV: development
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
+      # supabase
+      JWT_SECRET: "super-secret-jwt-token-with-at-least-32-characters-long"
+      SUPABASE_URL: http://localhost:54321
+      SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0"
+      SUPABASE_SERVICE_ROLE_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU"
+      NEXT_PUBLIC_SUPABASE_URL: http://localhost:54321
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0"
