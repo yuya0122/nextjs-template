@@ -1,4 +1,4 @@
--- diariesテーブルの作成 (IDをアプリケーション側で管理)
+-- eamplesテーブルの作成 (IDをアプリケーション側で管理)
 CREATE TABLE IF NOT EXISTS public.examples (
   id UUID PRIMARY KEY,  -- アプリケーション側でUUIDを生成
   created_at TIMESTAMP WITH TIME ZONE,  -- アプリケーション側で管理
